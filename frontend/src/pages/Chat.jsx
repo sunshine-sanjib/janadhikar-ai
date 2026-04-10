@@ -26,6 +26,7 @@ export default function Chat() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [scrollToTop, setScrollToTop] = useState(false)
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
   const messagesRef = useRef(null)
@@ -36,8 +37,13 @@ export default function Chat() {
   }, [searchParams])
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-  }, [messages, loading])
+    if (scrollToTop) {
+      if (messagesRef.current) messagesRef.current.scrollTop = 0
+      setScrollToTop(false)
+    } else {
+      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+    }
+  }, [messages, loading, scrollToTop])
 
   const sendMessage = async (text) => {
     const userMsg = text || input.trim()
@@ -87,16 +93,14 @@ export default function Chat() {
   }
 
   const reset = () => {
+    setScrollToTop(true)
     setMessages([{
       role: 'assistant',
       content: `**Jai Hind! I'm JanAdhikar AI.** 🇮🇳\n\nI'm here to help you understand your legal rights and take action. Tell me what problem you're facing.\n\n*I'll identify your rights, give you exact helpline numbers, and draft a complaint for you — all for free.*`
     }])
     setError(null)
     setInput('')
-    setTimeout(() => {
-      messagesRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
-      inputRef.current?.focus()
-    }, 50)
+    setTimeout(() => inputRef.current?.focus(), 50)
   }
 
   return (
