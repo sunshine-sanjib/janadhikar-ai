@@ -28,6 +28,7 @@ export default function Chat() {
   const [error, setError] = useState(null)
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
+  const messagesRef = useRef(null)
 
   useEffect(() => {
     const q = searchParams.get('q')
@@ -91,6 +92,11 @@ export default function Chat() {
       content: `**Jai Hind! I'm JanAdhikar AI.** 🇮🇳\n\nI'm here to help you understand your legal rights and take action. Tell me what problem you're facing.\n\n*I'll identify your rights, give you exact helpline numbers, and draft a complaint for you — all for free.*`
     }])
     setError(null)
+    setInput('')
+    setTimeout(() => {
+      messagesRef.current?.scrollTo({ top: 0, behavior: 'smooth' })
+      inputRef.current?.focus()
+    }, 50)
   }
 
   return (
@@ -151,7 +157,7 @@ export default function Chat() {
         </div>
 
         {/* Messages */}
-        <div className={styles.messages}>
+        <div className={styles.messages} ref={messagesRef}>
           {messages.map((msg, i) => (
             <div key={i} className={`${styles.messageRow} ${styles[msg.role]}`}>
               {msg.role === 'assistant' && (
