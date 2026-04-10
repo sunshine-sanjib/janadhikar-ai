@@ -48,19 +48,26 @@ export default function Chat() {
     setError(null)
 
     try {
+      // Build API payload: only user/assistant msgs, must start with user
+      const allMsgs = [...messages, { role: 'user', content: userMsg }]
+      const onlyValid = allMsgs.filter(m => m.role === 'user' || m.role === 'assistant')
+      const firstUser = onlyValid.findIndex(m => m.role === 'user')
+      const apiMessages = firstUser >= 0 ? onlyValid.slice(firstUser) : onlyValid
+
       const res = await fetch(`${API_URL}/api/chat`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          messages: [...messages, { role: 'user', content: userMsg }]
-        }),
+        body: JSON.stringify({ messages: apiMessages }),
       })
 
-      if (!res.ok) throw new Error('Server error')
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}))
+        throw new Error(errData.detail || `Server error ${res.status}`)
+      }
       const data = await res.json()
       setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
     } catch (err) {
-      setError('Could not connect to the server. Please try again.')
+      setError(`Could not get a response: ${err.message}`)
       setMessages(prev => prev.slice(0, -1))
     } finally {
       setLoading(false)
