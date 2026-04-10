@@ -2,10 +2,12 @@ services:
   - type: web
     name: janadhikar-ai-backend
     env: python
+    runtime: python
+    pythonVersion: "3.11.9"
     buildCommand: pip install -r requirements.txt
     startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
     envVars:
-      - key: ANTHROPIC_API_KEY
+      - key: GROQ_API_KEY
         sync: false
       - key: FRONTEND_URL
         sync: false
