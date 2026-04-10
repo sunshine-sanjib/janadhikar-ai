@@ -1,0 +1,202 @@
+.page { padding: 120px 0 80px; }
+
+.header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-bottom: 16px;
+}
+
+.sub {
+  color: var(--text-secondary);
+  font-size: 1.05rem;
+  margin-bottom: 32px;
+}
+
+.searchBox {
+  position: relative;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+}
+
+.searchInput {
+  width: 100%;
+  background: var(--surface-2);
+  border: 1px solid var(--border-bright);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 0.93rem;
+  padding: 13px 16px 13px 44px;
+  border-radius: var(--radius-full);
+  outline: none;
+  transition: all 0.2s;
+}
+
+.searchInput:focus {
+  border-color: rgba(255,153,51,0.35);
+  box-shadow: 0 0 0 3px rgba(255,153,51,0.08);
+}
+
+.searchInput::placeholder { color: var(--text-muted); }
+
+.content { display: flex; flex-direction: column; gap: 48px; }
+
+.category {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.catHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 28px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.catHeader:hover { background: var(--surface-2); }
+
+.catLeft {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.catEmoji { font-size: 2rem; }
+
+.catTitle {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.catCount {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.catActions { display: flex; align-items: center; gap: 10px; }
+
+.askBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--saffron-dim);
+  border: 1px solid rgba(255,153,51,0.2);
+  color: var(--saffron-light);
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 7px 14px;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.askBtn:hover {
+  background: var(--saffron);
+  color: white;
+  border-color: var(--saffron);
+}
+
+.rightsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.rightCard {
+  padding: 22px 24px;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+
+.rightCard:nth-child(3n) { border-right: none; }
+.rightCard:nth-last-child(-n+3) { border-bottom: none; }
+
+.card_saffron:hover { background: rgba(255,153,51,0.04); }
+.card_blue:hover { background: rgba(67,97,238,0.04); }
+.card_green:hover { background: rgba(34,197,94,0.04); }
+
+.rightHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.rightTitle {
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.3;
+  flex: 1;
+}
+
+.rightArticle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.art_saffron { background: var(--saffron-dim); color: var(--saffron-light); }
+.art_blue { background: var(--blue-dim); color: var(--blue-light); }
+.art_green { background: var(--green-dim); color: var(--green-light); }
+
+.rightDesc {
+  color: var(--text-secondary);
+  font-size: 0.83rem;
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.rightAsk {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.rightAsk:hover { color: var(--saffron-light); }
+
+@media (max-width: 768px) {
+  .rightsGrid { grid-template-columns: 1fr; }
+  .rightCard { border-right: none; }
+  .rightCard:nth-last-child(-n+3) { border-bottom: 1px solid var(--border); }
+  .rightCard:last-child { border-bottom: none; }
+}
+
+@media (max-width: 480px) {
+  .catHeader { padding: 16px 20px; }
+  .rightCard { padding: 16px 20px; }
+}
