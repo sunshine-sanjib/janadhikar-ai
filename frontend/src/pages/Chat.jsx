@@ -138,7 +138,7 @@ export default function Chat() {
 
       {/* Chat Area */}
       <div className={styles.chatArea}>
-        {/* Compact Header */}
+        {/* Header */}
         <div className={styles.chatHeader}>
           <div className={styles.chatHeaderLeft}>
             <div className={styles.aiAvatar}>
@@ -214,7 +214,7 @@ export default function Chat() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Input — fixed at bottom */}
+        {/* Input */}
         <div className={styles.inputArea}>
           <div className={styles.inputBox}>
             <textarea
