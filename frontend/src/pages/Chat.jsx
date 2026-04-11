@@ -6,7 +6,7 @@ import styles from './Chat.module.css'
 
 const QUICK_PROMPTS = [
   'Hospital refused to treat me',
-  'Police won\'t file my FIR',
+  "Police won't file my FIR",
   'Employer not paying salary',
   'Got cheated online shopping',
   'School denied RTE admission',
@@ -21,44 +21,40 @@ export default function Chat() {
     {
       role: 'assistant',
       content: `**Jai Hind! I'm JanAdhikar AI.** 🇮🇳\n\nI'm here to help you understand your legal rights and take action. Tell me what problem you're facing — whether it's with police, hospitals, employers, consumer issues, or anything else.\n\n*I'll identify your rights, give you exact helpline numbers, and draft a complaint for you — all for free.*`,
-    }
+    },
   ])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [scrollToTop, setScrollToTop] = useState(false)
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
   const messagesRef = useRef(null)
 
   useEffect(() => {
     const q = searchParams.get('q')
-    if (q) { setInput(q); inputRef.current?.focus() }
+    if (q) {
+      setInput(q)
+      inputRef.current?.focus()
+    }
   }, [searchParams])
 
   useEffect(() => {
-    if (scrollToTop) {
-      if (messagesRef.current) messagesRef.current.scrollTop = 0
-      setScrollToTop(false)
-    } else {
-      bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
-    }
-  }, [messages, loading, scrollToTop])
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages, loading])
 
   const sendMessage = async (text) => {
     const userMsg = text || input.trim()
     if (!userMsg) return
 
-    setMessages(prev => [...prev, { role: 'user', content: userMsg }])
+    setMessages((prev) => [...prev, { role: 'user', content: userMsg }])
     setInput('')
     setLoading(true)
     setError(null)
 
     try {
-      // Build API payload: only user/assistant msgs, must start with user
       const allMsgs = [...messages, { role: 'user', content: userMsg }]
-      const onlyValid = allMsgs.filter(m => m.role === 'user' || m.role === 'assistant')
-      const firstUser = onlyValid.findIndex(m => m.role === 'user')
+      const onlyValid = allMsgs.filter((m) => m.role === 'user' || m.role === 'assistant')
+      const firstUser = onlyValid.findIndex((m) => m.role === 'user')
       const apiMessages = firstUser >= 0 ? onlyValid.slice(firstUser) : onlyValid
 
       const res = await fetch(`${API_URL}/api/chat`, {
@@ -72,10 +68,10 @@ export default function Chat() {
         throw new Error(errData.detail || `Server error ${res.status}`)
       }
       const data = await res.json()
-      setMessages(prev => [...prev, { role: 'assistant', content: data.response }])
+      setMessages((prev) => [...prev, { role: 'assistant', content: data.response }])
     } catch (err) {
       setError(`Could not get a response: ${err.message}`)
-      setMessages(prev => prev.slice(0, -1))
+      setMessages((prev) => prev.slice(0, -1))
     } finally {
       setLoading(false)
     }
@@ -88,16 +84,15 @@ export default function Chat() {
     }
   }
 
-  const copyMessage = (text) => {
-    navigator.clipboard.writeText(text)
-  }
+  const copyMessage = (text) => navigator.clipboard.writeText(text)
 
   const reset = () => {
-    setScrollToTop(true)
-    setMessages([{
-      role: 'assistant',
-      content: `**Jai Hind! I'm JanAdhikar AI.** 🇮🇳\n\nI'm here to help you understand your legal rights and take action. Tell me what problem you're facing.\n\n*I'll identify your rights, give you exact helpline numbers, and draft a complaint for you — all for free.*`
-    }])
+    setMessages([
+      {
+        role: 'assistant',
+        content: `**Jai Hind! I'm JanAdhikar AI.** 🇮🇳\n\nI'm here to help you understand your legal rights and take action. Tell me what problem you're facing.\n\n*I'll identify your rights, give you exact helpline numbers, and draft a complaint for you — all for free.*`,
+      },
+    ])
     setError(null)
     setInput('')
     setTimeout(() => inputRef.current?.focus(), 50)
@@ -108,11 +103,11 @@ export default function Chat() {
       {/* Sidebar */}
       <aside className={styles.sidebar}>
         <div className={styles.sidebarHeader}>
-          <Scale size={16} />
+          <Scale size={14} />
           <span>Quick Problems</span>
         </div>
         <div className={styles.quickList}>
-          {QUICK_PROMPTS.map(p => (
+          {QUICK_PROMPTS.map((p) => (
             <button key={p} className={styles.quickBtn} onClick={() => sendMessage(p)}>
               {p}
             </button>
@@ -130,21 +125,24 @@ export default function Chat() {
             { label: 'NALSA Legal', number: '15100' },
             { label: 'Cyber Crime', number: '1930' },
             { label: 'Medical', number: '104' },
-          ].map(h => (
+          ].map((h) => (
             <div key={h.label} className={styles.helplineItem}>
               <span>{h.label}</span>
-              <a href={`tel:${h.number}`} className={styles.helplineNum}>{h.number}</a>
+              <a href={`tel:${h.number}`} className={styles.helplineNum}>
+                {h.number}
+              </a>
             </div>
           ))}
         </div>
       </aside>
 
-      {/* Chat */}
+      {/* Chat Area */}
       <div className={styles.chatArea}>
+        {/* Compact Header */}
         <div className={styles.chatHeader}>
           <div className={styles.chatHeaderLeft}>
             <div className={styles.aiAvatar}>
-              <Scale size={16} />
+              <Scale size={15} />
             </div>
             <div>
               <div className={styles.aiName}>JanAdhikar AI</div>
@@ -155,7 +153,7 @@ export default function Chat() {
             </div>
           </div>
           <button className={styles.resetBtn} onClick={reset} title="New conversation">
-            <RotateCcw size={15} />
+            <RotateCcw size={13} />
             New Chat
           </button>
         </div>
@@ -166,7 +164,7 @@ export default function Chat() {
             <div key={i} className={`${styles.messageRow} ${styles[msg.role]}`}>
               {msg.role === 'assistant' && (
                 <div className={styles.msgAvatar}>
-                  <Scale size={14} />
+                  <Scale size={13} />
                 </div>
               )}
               <div className={styles.bubble}>
@@ -180,10 +178,10 @@ export default function Chat() {
                 {msg.role === 'assistant' && (
                   <div className={styles.msgActions}>
                     <button onClick={() => copyMessage(msg.content)} title="Copy">
-                      <Copy size={12} />
+                      <Copy size={11} />
                     </button>
                     <button title="Helpful">
-                      <ThumbsUp size={12} />
+                      <ThumbsUp size={11} />
                     </button>
                   </div>
                 )}
@@ -194,11 +192,13 @@ export default function Chat() {
           {loading && (
             <div className={`${styles.messageRow} ${styles.assistant}`}>
               <div className={styles.msgAvatar}>
-                <Scale size={14} />
+                <Scale size={13} />
               </div>
               <div className={styles.bubble}>
                 <div className={styles.typing}>
-                  <span /><span /><span />
+                  <span />
+                  <span />
+                  <span />
                 </div>
               </div>
             </div>
@@ -206,7 +206,7 @@ export default function Chat() {
 
           {error && (
             <div className={styles.errorMsg}>
-              <AlertCircle size={14} />
+              <AlertCircle size={13} />
               {error}
             </div>
           )}
@@ -214,13 +214,13 @@ export default function Chat() {
           <div ref={bottomRef} />
         </div>
 
-        {/* Input */}
+        {/* Input — fixed at bottom */}
         <div className={styles.inputArea}>
           <div className={styles.inputBox}>
             <textarea
               ref={inputRef}
               value={input}
-              onChange={e => setInput(e.target.value)}
+              onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKey}
               placeholder="Describe your problem... (e.g. 'My employer hasn't paid me for 3 months')"
               rows={1}
@@ -231,7 +231,7 @@ export default function Chat() {
               onClick={() => sendMessage()}
               disabled={!input.trim() || loading}
             >
-              <Send size={16} />
+              <Send size={15} />
             </button>
           </div>
           <p className={styles.inputNote}>
